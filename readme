@@ -1,0 +1,24 @@
+to create tsconfig file
+npx tsc --init
+
+setup smtp mail
+* got to setting
+* search for App password
+* get the device password
+
+work flow:
+* register
+when user registers email send to their mail
+
+* activate user:
+activate user with token and code recieved in the mail
+
+* while login
+refresh token and access token is set into cookies
+
+* while logut 
+refresh token and access token is set into cookies in removed
+
+* becoz access token gets expired in every 5min
+refresh token and access token is updated every 5 min will be very much secured
+
