@@ -20,14 +20,16 @@ export const isAuthenticated = catchAsyncError(async (req: Request,res: Response
         return next(new ErrorHandler("access token is not valid",400))
     }
 
+    console.log("here decoded",decoded)
     const user = await Redis.get(decoded.id)
-
+    console.log("here", user)
     if(!user){
         return next(new ErrorHandler("user not valid",400))
     }
 
     req.user = JSON.parse(user)
     next()
+
 })
 
 // validate user role

@@ -13,12 +13,12 @@ interface ITokenOptions{
 
 // parse enviornment variables to integrate with fail value
 const  accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || '300', 10)
-const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || '1200', 10)
+const  refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || '1200', 10)
 
 // options for cookies
 export const accessTokenOptions:ITokenOptions = {
     expires: new Date(Date.now() + accessTokenExpire * 60 * 60 * 1000),
-    maxAge: accessTokenExpire * 1000,
+    maxAge: accessTokenExpire * 60 * 60 * 1000, 
     httpOnly: true,
     sameSite: 'lax'
 }
@@ -30,15 +30,14 @@ export const refreshTokenOptions:ITokenOptions = {
     sameSite: 'lax' 
 }
 
-export const sendToken = (user:IUser, statusCode: number, res: Response) => {
+export const sendToken = async (user:IUser, statusCode: number, res: Response) => {
    
     const accessToken = user.SignAccessToken()
     const refreshToken = user.SignRefreshToken()
-   
+    console.log("send token")
     
     // upload session to redis
     try{
-        // redis.set(redis.set(user._id, JSON.stringify(user) as any))
         Redis.set(user._id, JSON.stringify(user) as any)
     }
     catch(error){
@@ -48,7 +47,7 @@ export const sendToken = (user:IUser, statusCode: number, res: Response) => {
     if(process.env.NODE_ENV === 'production'){
         accessTokenOptions.secure = true
     }
-
+   
     res.cookie("accessToken", accessToken, accessTokenOptions)
     res.cookie("refreshToken", refreshToken, refreshTokenOptions)
 
