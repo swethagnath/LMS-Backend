@@ -38,6 +38,7 @@ export const sendToken = async (user:IUser, statusCode: number, res: Response) =
     
     // upload session to redis
     try{
+        console.log(user)
         Redis.set(user._id, JSON.stringify(user) as any)
     }
     catch(error){

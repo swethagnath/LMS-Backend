@@ -26,7 +26,7 @@ export const isAuthenticated = catchAsyncError(async (req: Request,res: Response
     if(!user){
         return next(new ErrorHandler("user not valid",400))
     }
-
+    console.log(user)
     req.user = JSON.parse(user)
     next()
 
@@ -34,7 +34,9 @@ export const isAuthenticated = catchAsyncError(async (req: Request,res: Response
 
 // validate user role
 export const authorizeRoles = (...roles: string[]) => {
+    
     return (req: Request,res: Response ,next: NextFunction) => {
+        console.log(...roles,req.user.role)
         if(!roles.includes(req.user?.role || '')){
             return next(new ErrorHandler("Role is not allowded to access this resource",403))
         }
