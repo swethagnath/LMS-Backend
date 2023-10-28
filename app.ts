@@ -7,6 +7,7 @@ require('dotenv').config()
 import {ErrorMiddleware} from './middelware/error'
 import  userRouter from "./routes/user.route"
 import courseRouter from './routes/course.route'
+import orderRouter from './routes/order.route'
 
 // body parser
 
@@ -20,7 +21,7 @@ app.use(cors({
 
 app.use('/api/v1', userRouter)
 app.use('/api/v1', courseRouter)
-
+app.use('/api/v1', orderRouter)
 //testing api
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json({

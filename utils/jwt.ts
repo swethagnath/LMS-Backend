@@ -34,11 +34,9 @@ export const sendToken = async (user:IUser, statusCode: number, res: Response) =
    
     const accessToken = user.SignAccessToken()
     const refreshToken = user.SignRefreshToken()
-    console.log("send token")
-    
+    console.log(user)
     // upload session to redis
     try{
-        console.log(user)
         Redis.set(user._id, JSON.stringify(user) as any)
     }
     catch(error){

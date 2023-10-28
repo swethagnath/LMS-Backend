@@ -149,7 +149,7 @@ export const loginUser = catchAsyncError(async (req: Request,res: Response ,next
             return next(new ErrorHandler("Please enter email and password", 400))
         }
 
-        const user = await userModel.findOne({email}).select("password")
+        const user = await userModel.findOne({email}).select("password courses")
         console.log("user", user)
 
         if(!user){

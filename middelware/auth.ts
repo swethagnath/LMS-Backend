@@ -8,6 +8,8 @@ const Redis = redis()
 // autheniticate user
 export const isAuthenticated = catchAsyncError(async (req: Request,res: Response ,next: NextFunction) => {
 
+    console.log("here", "isAuthenticated")
+
     const access_token = req.cookies.accessToken
 
     if(!access_token){  

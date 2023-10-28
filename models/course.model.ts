@@ -55,7 +55,8 @@ const reviewSchema: Schema<IReview> = new mongoose.Schema ({
         type: Number,
         default: 0
     },
-    // comments: String
+    comment: String,
+    commentReplies: [Object]
 })
 
 const linkSchema:Schema<ILink> = new mongoose.Schema({
