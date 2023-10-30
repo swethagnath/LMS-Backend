@@ -33,5 +33,9 @@
     "redis-server": "^1.2.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@types/node-cron": "^3.0.10",
+    "node-cron": "^3.0.2"
   }
 }

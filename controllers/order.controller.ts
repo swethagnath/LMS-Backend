@@ -2,20 +2,11 @@ import {Request, Response, NextFunction} from "express"
 import {catchAsyncError} from "../middelware/catchAsyncError"
 import ErrorHandler from "../utils/ErrorHandler"
 import CourseModel from "../models/course.model"
-import { redis } from "../utils/redis"
-import mongoose from "mongoose"
-import ejs from "ejs"
-import path from "path"
-import sendMail from "../utils/sendMail"
 import NotificationModel from '../models/notification.model'
-import OrderModel from '../models/order.model'
 import userModel from '../models/user.model'
-const Redis = redis()
-import {newOrder} from '../services/order.service'
+import {newOrder, getAllOrdersService} from '../services/order.service'
 
 // create order
-
-
 export const createOrder =  catchAsyncError(async (req: Request,res: Response ,next: NextFunction) => {
     try{
         const {courseId, payment_info} = req.body as IOrder
@@ -23,9 +14,9 @@ export const createOrder =  catchAsyncError(async (req: Request,res: Response ,n
 
         const courseExistInUser = user?.courses.some((course:any) => course._id.toString() === courseId)
 
-        // if(courseExistInUser){
-        //     return next(new ErrorHandler("You have already purchased this course", 400))
-        // }
+        if(courseExistInUser){
+            return next(new ErrorHandler("You have already purchased this course", 400))
+        }
 
         const course = await CourseModel.findById(courseId)
         if(!course){
@@ -70,18 +61,24 @@ export const createOrder =  catchAsyncError(async (req: Request,res: Response ,n
             title: "New Order",
             message: `You have a new order from ${course?.name}`
         })
-
-        if(course){
-            course.purchased += 1
-        }
+        
+        course.purchased ? course.purchased+= 1 : course.purchased
         
         await course.save()
-        
-        await course.findByIdAndUpdate()
 
         newOrder(data, res, next)
+
     }catch(error: any){
-        console.log(error)
         return  next(new ErrorHandler("Invalid email or password", 400))
+    }
+})
+
+// get all orders -- only for admin
+
+export const getAllOrders = catchAsyncError(async (req: Request,res: Response ,next: NextFunction) => {
+    try{
+        getAllOrdersService(res)
+    }catch(error:any){
+        return next(new ErrorHandler(error.message, 400))
     }
 })
