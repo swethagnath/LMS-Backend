@@ -1,5 +1,5 @@
 import express from 'express'
-import {uploadCourse, editCourse, getSingleCourse, getAllCourse, getCourseByUser, addQuestion, addAnswer, addReview, addReplyToReview   } from '../controllers/course.controller'
+import {uploadCourse, editCourse, getSingleCourse, getAllCourse, getCourseByUser, addQuestion, addAnswer, addReview, addReplyToReview, getAllCourses, deleteCourse   } from '../controllers/course.controller'
 import {authorizeRoles, isAuthenticated } from '../middelware/auth'
 const courseRouter = express.Router()
 
@@ -22,5 +22,9 @@ courseRouter.put("/add-review/:id", isAuthenticated , addReview )
 courseRouter.put("/add-review/:id", isAuthenticated , addReplyToReview )
 
 courseRouter.put("/add-reply-review", isAuthenticated , authorizeRoles("admin"), addReplyToReview )
+
+courseRouter.get("/get-courses", isAuthenticated , authorizeRoles("admin"), getAllCourses )
+
+courseRouter.put("/delete-courses/:id", isAuthenticated , authorizeRoles("admin"), deleteCourse )
 
 export default courseRouter
