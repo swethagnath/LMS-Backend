@@ -1,5 +1,5 @@
 import express from 'express'
-import {registrationUser, activateUser, loginUser, logoutUser, updateAccessToken, getUserInfo, socialAuth, updateuserInfo, updatePassword, updateProfilePicture } from '../controllers/user.controller'
+import {registrationUser, activateUser, loginUser, logoutUser, updateAccessToken, getUserInfo, socialAuth, updateuserInfo, updatePassword, updateProfilePicture, getAllUsers, updateUserRole } from '../controllers/user.controller'
 const userRouter = express.Router()
 import {isAuthenticated,  authorizeRoles} from '../middelware/auth'
 
@@ -32,5 +32,14 @@ userRouter.put('/update-user-password', isAuthenticated, updatePassword)
 
 // update user image
 userRouter.put('/update-user-avatar', isAuthenticated, updateProfilePicture)
+
+// get all users
+userRouter.get('/get-all-users', isAuthenticated, authorizeRoles("admin"), getAllUsers)
+
+// update users
+userRouter.put('/update-user-route', isAuthenticated, authorizeRoles("admin"), updateUserRole)
+
+// delete users
+userRouter.delete('/delete-user/:id', isAuthenticated, authorizeRoles("admin"), deleteUser)
 
 export default userRouter
