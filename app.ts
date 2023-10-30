@@ -8,6 +8,7 @@ import {ErrorMiddleware} from './middelware/error'
 import  userRouter from "./routes/user.route"
 import courseRouter from './routes/course.route'
 import orderRouter from './routes/order.route'
+import notificationRoute from './routes/notification.route'
 
 // body parser
 
@@ -19,9 +20,8 @@ app.use(cors({
     origin: process.env.ORIGIN
 }))
 
-app.use('/api/v1', userRouter)
-app.use('/api/v1', courseRouter)
-app.use('/api/v1', orderRouter)
+app.use('/api/v1', userRouter, courseRouter, orderRouter, notificationRoute)
+
 //testing api
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
     res.status(200).json({
