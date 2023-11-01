@@ -6,6 +6,11 @@ setup smtp mail
 * search for App password
 * get the device password
 
+starting the App
+   * npm install
+   * npm run dev
+
+
 work flow:
 * register
 when user registers email send to their mail
@@ -22,3 +27,28 @@ refresh token and access token is set into cookies in removed
 * becoz access token gets expired in every 5min
 refresh token and access token is updated every 5 min will be very much secured
 
+*Cache maintenance 
+used is redis
+ - If user not login for 10days or as prefferable then expire it from redis and 
+    remove the user from cache as this will reduce the busy network loading.
+ - caching based on daily bases or frequent uses
+
+- daily basis
+    if user uses the website every day then session should also be updated everyday
+    if not logged in for 30 days then session will be expired and asks to login again
+    for regular user this is made more easier by expiring redis cache in update token 
+    so each time requesting for new access token then the redis expiry will be updated back to the date
+    when not logged  for 7 days, then from redis user will be expired and need to login again
+
+    ie 
+    update toke or refresh token route
+    1)refresh token verify 
+    2)check user id is present in redis if not then login update redis in this routes becoz each 5 seconds this routes will make sure user is using the website for long period
+    3)set redis expiry, return access token and refresh token
+
+    login
+    1) return access token and refresh token and set to redis
+
+    simillarly for courses
+    only popular course be saved in cache
+    so set expiry in get course so each time the popular course expiry keeps updating and removes the unpopular course and there by reduce the traffic network

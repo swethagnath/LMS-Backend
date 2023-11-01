@@ -1,5 +1,5 @@
 import express from 'express'
-import {registrationUser, activateUser, loginUser, logoutUser, updateAccessToken, getUserInfo, socialAuth, updateuserInfo, updatePassword, updateProfilePicture, getAllUsers, updateUserRole } from '../controllers/user.controller'
+import {registrationUser, activateUser, loginUser, logoutUser, updateAccessToken, getUserInfo, socialAuth, updateuserInfo, updatePassword, updateProfilePicture, getAllUsers, updateUserRole, deleteUser } from '../controllers/user.controller'
 const userRouter = express.Router()
 import {isAuthenticated,  authorizeRoles} from '../middelware/auth'
 

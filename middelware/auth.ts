@@ -26,7 +26,7 @@ export const isAuthenticated = catchAsyncError(async (req: Request,res: Response
     const user = await Redis.get(decoded.id)
     console.log("here", user)
     if(!user){
-        return next(new ErrorHandler("user not valid",400))
+        return next(new ErrorHandler("Please login to the resource",400))
     }
     console.log(user)
     req.user = JSON.parse(user)

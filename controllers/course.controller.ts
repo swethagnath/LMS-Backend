@@ -87,7 +87,7 @@ export const getSingleCourse  = catchAsyncError(async (req: Request,res: Respons
         }else{
             console.log("mongo db")
             const course = await CourseModel.findById(courseId).select("-courseData.videoUrl -courseData.suggestion -courseData.questions  -courseData.links")
-            await Redis.set(courseId, JSON.stringify(course))
+            await Redis.set(courseId, JSON.stringify(course), 'EX', 604776) // 7 DAYS IN SECONDS
             res.status(200).json({
                 success: true,
                 course  

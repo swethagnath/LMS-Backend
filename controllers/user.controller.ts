@@ -211,7 +211,7 @@ export const updateAccessToken = catchAsyncError(async(req: Request,res: Respons
         const session = await Redis.get(decoded.id as string)
         
         if(!session){
-            return next(new ErrorHandler(message, 400))
+            return next(new ErrorHandler('Please login for access this resource', 400))
         }
 
         const user = JSON.parse(session)
@@ -229,6 +229,8 @@ export const updateAccessToken = catchAsyncError(async(req: Request,res: Respons
         
         res.cookie("accessToken", accessToken, accessTokenOptions)
         res.cookie("refreshToken", refreshToken, refreshTokenOptions)
+
+        await redis.set(user._id, JSON.stringify(user), "EX", 604800) //7days in seconds
 
         res.status(200).json({
             status: "success",
